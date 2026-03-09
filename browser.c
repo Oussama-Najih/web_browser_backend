@@ -84,7 +84,6 @@ void tm_decrement_ids(Tab *newer_tab) {
 
 }
 
-
 void tab_visit(Tab *t, const char *url) {
     if (t->current && t->current->next) {
         HistoryNode *n = t->current->next;
@@ -103,7 +102,6 @@ void tab_visit(Tab *t, const char *url) {
     t->tail = n;
     t->current = n;
 }
-
 
 void tab_delete_entry(Tab *t, const char *url) {
     HistoryNode *current = t->head;

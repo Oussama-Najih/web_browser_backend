@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "currentIndex": 2,
+    "history": [
+      {
+        "url": "google.com"
+      },
+      {
+        "url": "youtube.com"
+      },
+      {
+        "url": "github.com"
+      },
+      {
+        "url": "stackoverflow.com"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "currentIndex": 0,
+    "history": [
+      {
+        "url": "wikipedia.org"
+      },
+      {
+        "url": "openai.com"
+      },
+      {
+        "url": "coursera.org"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "currentIndex": 1,
+    "history": [
+      {
+        "url": "reddit.com"
+      },
+      {
+        "url": "news.ycombinator.com"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "currentIndex": 3,
+    "history": [
+      {
+        "url": "amazon.com"
+      },
+      {
+        "url": "netflix.com"
+      },
+      {
+        "url": "spotify.com"
+      },
+      {
+        "url": "twitch.tv"
+      },
+      {
+        "url": "discord.com"
+      }
+    ]
+  }
+]

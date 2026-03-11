@@ -1,5 +1,6 @@
 #include "browser.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 
@@ -9,13 +10,11 @@ HistoryNode *make_node(const char *url) {
     return n;
 }
 
-
 TabManager *tm_init() {
     TabManager *tm = calloc(1, sizeof *tm);
     tm->nextId = 1;
     return tm;
 }
-
 
 void tm_free(TabManager *tm) {
     Tab *currentTab = tm->first;
@@ -38,6 +37,7 @@ void tm_free(TabManager *tm) {
 
 Tab *tm_new_tab(TabManager *tm) {
     Tab *t = calloc(1, sizeof *t);
+    t->currentIndex = -1;
     t->id = tm->nextId;
     tm->nextId ++;
     Tab* tmp = tm->first;
@@ -56,6 +56,11 @@ Tab *tm_new_tab(TabManager *tm) {
 }
 
 void tm_close_tab(TabManager *tm, int id) {
+    if (id==1)
+    {
+        return;
+    }
+    
     Tab **tmp = &tm->first;
     while (*tmp && (*tmp)->id != id) tmp = &(*tmp)->next;
     if (!*tmp) return;
@@ -84,7 +89,7 @@ void tm_decrement_ids(Tab *newer_tab) {
 
 }
 
-void tab_visit(Tab *t, const char *url) {
+HistoryNode *tab_visit(Tab *t, const char *url,int onLoad) {
     if (t->current && t->current->next) {
         HistoryNode *n = t->current->next;
         while (n) {
@@ -101,44 +106,31 @@ void tab_visit(Tab *t, const char *url) {
     if (t->tail) t->tail->next = n;
     t->tail = n;
     t->current = n;
-}
-
-void tab_delete_entry(Tab *t, const char *url) {
-    HistoryNode *current = t->head;
-    while (current) {
-        if (strcmp(current->url, url) == 0) {
-            if (current->prev) current->prev->next = current->next;
-            if (current->next) current->next->prev = current->prev;
-            if (t->head == current) t->head = current->next;
-            if (t->tail == current) t->tail = current->prev;
-            if (t->current == current)
-                t->current = current->next ? current->next : current->prev;
-            free(current);
-            return;
-        }
-        current = current->next;
+    if (!onLoad)
+    {
+        t->currentIndex++;
     }
+    return n;
 }
 
 
 void tab_go_back(Tab *t) {
-    if (t->current && t->current->prev)
+    if (t->current && t->current->prev){
         t->current = t->current->prev;
+        t->currentIndex--;
+    }
 }
-
 
 void tab_go_forward(Tab *t) {
-    if (t->current && t->current->next)
+    if (t->current && t->current->next){
         t->current = t->current->next;
+        t->currentIndex++;
+    }
 }
 
 
-void tab_rename_url(Tab *t, const char *old_url, const char *new_url) {
-    for (HistoryNode *n = t->head; n; n = n->next) {
-        if (strcmp(n->url, old_url) == 0) {
-            strncpy(n->url, new_url, sizeof n->url - 1);
-            n->url[sizeof n->url - 1] = '\0'; 
-            return;
-        }
-    }
+Tab *find_tab(TabManager *tm, int id) {
+    for (Tab *t = tm->first; t; t = t->next)
+        if (t->id == id) return t;
+    return NULL;
 }

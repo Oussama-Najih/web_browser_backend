@@ -8,6 +8,7 @@ typedef struct HistoryNode {
 
 typedef struct Tab {
     int id;
+    int currentIndex;
     HistoryNode *head, *tail, *current;
     struct Tab *next;
 } Tab;
@@ -23,15 +24,14 @@ void tm_free(TabManager *tm);
 Tab *tm_new_tab(TabManager *tm);
 void tm_close_tab(TabManager *tm, int id);
 
-void tab_visit(Tab *t, const char *url);
-void tab_delete_entry(Tab *t, const char *url);
+HistoryNode *tab_visit(Tab *t, const char *url,int onLoad);
 
 void tab_go_back(Tab *t);
 void tab_go_forward(Tab *t);
 
-void tab_rename_url(Tab *t, const char *old_url, const char *new_url);
 
 void tm_decrement_ids(Tab *t);
 
+Tab *find_tab(TabManager *tm, int id);
 
 #endif

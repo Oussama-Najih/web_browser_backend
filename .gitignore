@@ -1,3 +1,4 @@
 browser_state.json
-*.o
+*/*.o
+server.o
 server
